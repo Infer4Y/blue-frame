@@ -5,8 +5,8 @@ import java.io.InputStream;
 import java.net.URL;
 
 public class Updater {
-    private final static String versionURL = "";
-    private final static String historyURL = "";
+    private final static String versionURL = "https://github.com/Infer4Y/blue-frame/updater/version.html";
+    private final static String historyURL = "https://github.com/Infer4Y/blue-frame/updater/history.html";
     public static String getLatestVersion() throws Exception
     {
         String data = getData(versionURL);
@@ -22,12 +22,10 @@ public class Updater {
     private static String getData(String address) throws IOException {
         URL url = new URL(address);
 
-        InputStream html = null;
-
-        html = url.openStream();
+        InputStream html = url.openStream();
 
         int c = 0;
-        StringBuffer buffer = new StringBuffer("");
+        StringBuilder buffer = new StringBuilder();
 
         while(c != -1) {
             c = html.read();
