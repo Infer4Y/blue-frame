@@ -1,4 +1,4 @@
-package inferno.blue_launcher;
+package inferno.blue_launcher.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
