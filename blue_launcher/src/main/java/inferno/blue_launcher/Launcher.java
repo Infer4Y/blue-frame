@@ -1,5 +1,8 @@
 package inferno.blue_launcher;
 
+import inferno.blue_launcher.ui.UpdateInformation;
+import inferno.blue_launcher.utils.Updater;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -14,6 +17,7 @@ public class Launcher extends JFrame{
 
     private JTextArea outText;
     private JButton launch;
+    private boolean result;
 
     public Launcher() {
         initComponents();
@@ -22,7 +26,6 @@ public class Launcher extends JFrame{
     }
     private void initComponents() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
 
         JPanel pan1 = new JPanel();
         pan1.setLayout(new BorderLayout());
@@ -39,8 +42,11 @@ public class Launcher extends JFrame{
         launch.addActionListener(e -> launch());
         pan2.add(launch);
 
+        JButton updateinfo = new JButton("Update Info");
+        updateinfo.addActionListener(e -> new UpdateInformation("BlueFrame"));
         JButton cancel = new JButton("Cancel Update");
         cancel.addActionListener(e -> System.exit(0));
+        pan2.add(updateinfo);
         pan2.add(cancel);
         pan1.add(sp,BorderLayout.CENTER);
         pan1.add(pan2,BorderLayout.SOUTH);
@@ -79,13 +85,14 @@ public class Launcher extends JFrame{
     private void cleanup() {
         outText.setText(outText.getText()+"\nPreforming clean up...");
         File f = new File("update.zip");
-        f.delete();
+        result = f.delete();
         remove(new File(root));
-        new File(root).delete();
+        result = new File(root).delete();
     }
 
     private void remove(File f) {
         File[]files = f.listFiles();
+        assert files != null;
         for(File ff:files) {
             if(ff.isDirectory()) {
                 remove(ff);
@@ -97,17 +104,20 @@ public class Launcher extends JFrame{
     }
     private void copyFiles(File f,String dir) throws IOException {
         File[]files = f.listFiles();
+        assert files != null;
         for(File ff:files) {
             if(ff.isDirectory()){
-                new File(dir+"/"+ff.getName()).mkdir();
+                File f1 = new File(dir+"/"+ff.getName());
+                result = f1.createNewFile();
                 copyFiles(ff,dir+"/"+ff.getName());
             } else {
+
                 copy(ff.getAbsolutePath(),dir+"/"+ff.getName());
             }
 
         }
     }
-    public void copy(String srFile, String dtFile) throws IOException{
+    private void copy(String srFile, String dtFile) throws IOException{
         File f1 = new File(srFile);
         File f2 = new File(dtFile);
 
@@ -130,16 +140,16 @@ public class Launcher extends JFrame{
         ZipEntry entry;
         ZipFile zipfile = new ZipFile("update.zip");
         Enumeration e = zipfile.entries();
-        (new File(root)).mkdir();
+        result = (new File(root)).mkdirs();
         while(e.hasMoreElements()) {
             entry = (ZipEntry) e.nextElement();
             outText.setText(outText.getText()+"\nExtracting: " +entry);
-            if(entry.isDirectory()) { (new File(root + entry.getName())).mkdir();
+            if(entry.isDirectory()) { result = (new File(root + entry.getName())).mkdirs();
             } else {
-                (new File(root+entry.getName())).createNewFile();
+                result = (new File(root+entry.getName())).createNewFile();
                 is = new BufferedInputStream(zipfile.getInputStream(entry));
                 int count;
-                byte data[] = new byte[BUFFER];
+                byte[] data = new byte[BUFFER];
                 FileOutputStream fos = new FileOutputStream(root+entry.getName());
                 dest = new BufferedOutputStream(fos, BUFFER);
                 while ((count = is.read(data, 0, BUFFER)) != -1) {
@@ -158,13 +168,11 @@ public class Launcher extends JFrame{
         URLConnection conn = url.openConnection();
         InputStream is = conn.getInputStream();
         long max = conn.getContentLength();
-        outText.setText(outText.getText()+"\n"+"Downloding file...\nUpdate Size(compressed): "+max+" Bytes");
+        outText.setText(outText.getText()+"\n"+"Downloading file...\nUpdate Size(compressed): "+max+" Bytes");
         BufferedOutputStream fOut = new BufferedOutputStream(new FileOutputStream(new File("update.zip")));
         byte[] buffer = new byte[32 * 1024];
-        int bytesRead = 0;
-        int in = 0;
+        int bytesRead;
         while ((bytesRead = is.read(buffer)) != -1) {
-            in += bytesRead;
             fOut.write(buffer, 0, bytesRead);
         }
         fOut.flush();
