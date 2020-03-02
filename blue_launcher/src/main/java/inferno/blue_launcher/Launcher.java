@@ -174,7 +174,7 @@ public class Launcher extends JFrame{
 
     }
     private String getDownloadLinkFromHost() throws IOException {
-        String path = "https://github.com/Infer4Y/blue-frame/updater/url.html";
+        String path = "https://github.com/Infer4Y/blue-frame/blob/master/updater/url.html";
         URL url = new URL(path);
 
         InputStream html = url.openStream();
