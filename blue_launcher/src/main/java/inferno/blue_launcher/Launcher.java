@@ -30,17 +30,15 @@ public class Launcher extends JFrame{
         initComponents();
         setBackground(Color.black);
 
-        if (netIsAvailable()) {
-            try {
-                if (!(new File("update/blue-frame-" + Updater.getLatestVersion() + ".jar").exists())) {
-                    new UpdateInformation(Updater.getWhatsNew());
-                    launch.setEnabled(false);
-                    launch.setToolTipText("Sorry. Please update to the latest version.");
-                    update.setVisible(true);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            if (!(new File("update/blue-frame-"+ Updater.getLatestVersion()+".jar").exists())){
+                new UpdateInformation(Updater.getWhatsNew());
+                launch.setEnabled(false);
+                launch.setToolTipText("Sorry. Please update to the latest version.");
+                update.setVisible(true);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     private void initComponents() {
@@ -111,20 +109,6 @@ public class Launcher extends JFrame{
         Border compound = new CompoundBorder(line, margin);
         button.setBorder(compound);
         return button;
-    }
-
-    private static boolean netIsAvailable() {
-        try {
-            final URL url = new URL("http://www.google.com");
-            final URLConnection conn = url.openConnection();
-            conn.connect();
-            conn.getInputStream().close();
-            return true;
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            return false;
-        }
     }
 
     public static void main(String args[]) {
