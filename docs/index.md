@@ -1,7 +1,6 @@
 # Blue Frame
 Welcome to Blue Frame!
 
-### Current version : 0
+### Current version : 1.0-SNAPSHOT
 #### Release notes
----
-In progress right now
+Currently in development
