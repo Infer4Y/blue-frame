@@ -1,6 +1,8 @@
 package inferno.blue_launcher;
 
 import inferno.blue_launcher.utils.Updater;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,14 +19,19 @@ public class Launcher extends JFrame{
 
     public Launcher() {
         initComponents();
+        Document domTree = null;
+        try {
+            domTree = Jsoup.connect("http://infer4y.github.io/blue-frame/").get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         outText.setEditable(false);
-        URL myurl = null;
+        outText.setContentType( "text/html" );
         try {
-            myurl=new URL("https://infer4y.github.io/blue-frame/");
-        } catch (MalformedURLException ex) {ex.printStackTrace();}
-        try {
-            outText.setPage(myurl);
-        } catch (IOException ex) {ex.printStackTrace();}
+            outText.setPage(domTree.html());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         setBackground(Color.black);
     }
     private void initComponents() {
