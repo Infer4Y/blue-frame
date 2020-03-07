@@ -1,12 +1,11 @@
 package inferno.blue_launcher;
 
+import inferno.blue_launcher.ui.UpdateInformation;
 import inferno.blue_launcher.utils.Updater;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +24,14 @@ public class Launcher extends JFrame{
     public Launcher() {
         initComponents();
         setBackground(Color.black);
+
+        try {
+            if (!(new File("update/blue-frame-"+ Updater.getLatestVersion()+".jar").exists())){
+                new UpdateInformation(Updater.getWhatsNew());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     private void initComponents() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
