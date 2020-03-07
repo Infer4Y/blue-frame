@@ -1,11 +1,17 @@
 plugins {
     id 'java'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
 group 'inferno'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
+
+javafx {
+    version = '11'
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web', 'javafx.swing']
+}
 
 repositories {
     mavenCentral()

@@ -1,6 +1,10 @@
 package inferno.blue_launcher;
 
 import inferno.blue_launcher.utils.Updater;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.web.WebView;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -13,25 +17,13 @@ import java.net.URLConnection;
 
 public class Launcher extends JFrame{
 
-    private JTextPane outText;
+    //private JTextPane outText;
+    private JFXPanel javafxBridge;
     private JButton launch;
-    private boolean result;
+    //private boolean result;
 
     public Launcher() {
         initComponents();
-        Document domTree = null;
-        try {
-            domTree = Jsoup.connect("http://infer4y.github.io/blue-frame/").get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        outText.setEditable(false);
-        outText.setContentType( "text/html" );
-        try {
-            outText.setPage(domTree.html());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         setBackground(Color.black);
     }
     private void initComponents() {
@@ -43,9 +35,11 @@ public class Launcher extends JFrame{
         JPanel pan2 = new JPanel();
         pan2.setLayout(new FlowLayout());
 
-        outText = new JTextPane();
-        JScrollPane sp = new JScrollPane();
-        sp.setViewportView(outText);
+        //outText = new JTextPane();
+        //JScrollPane sp = new JScrollPane();
+        //sp.setViewportView(outText);
+
+        javafxBridge = new JFXPanel();
 
         launch = new JButton("Launch App");
         launch.addActionListener(e -> launch());
@@ -54,38 +48,19 @@ public class Launcher extends JFrame{
         JButton cancel = new JButton("Exit");
         cancel.addActionListener(e -> System.exit(0));
         pan2.add(cancel);
-        pan1.add(sp,BorderLayout.CENTER);
+        //pan1.add(sp,BorderLayout.CENTER);
+        pan1.add(javafxBridge,BorderLayout.CENTER);
         pan1.add(pan2,BorderLayout.SOUTH);
 
         add(pan1);
-        pack();
-        this.setSize(500, 400);
-    }
+        this.setSize(1280, 720);
+        this.setLocationRelativeTo(null);
 
-    public static String sendGetRequest(String endpoint){
-        String result = null;
-        //Makes sure the endpoint is valid
-        if (endpoint.startsWith("http://") || endpoint.startsWith("https://")){
-            try{
-                //Gets a connection to the web-page
-                URL url = new URL(endpoint);
-                URLConnection conn = url.openConnection ();
-                BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                StringBuilder sb = new StringBuilder();
-                //Reads lines from the web-page and appends them to the StringBuilder
-                String line;
-                while ((line = rd.readLine()) != null){
-                    sb.append(line);
-                }
-                //Close the connection
-                rd.close();
-                //Return the contents of the StringBuilder
-                result = sb.toString();
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-        return result;
+        Platform.runLater(() -> {
+            WebView webView = new WebView();
+            javafxBridge.setScene(new Scene(webView));
+            webView.getEngine().load("https://infer4y.github.io/blue-frame/");
+        });
     }
 
     private void launch() {
