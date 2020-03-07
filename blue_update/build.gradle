@@ -3,12 +3,18 @@ plugins {
 }
 
 group 'inferno'
-version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'inferno.blue_update.Main'
+    }
+    baseName = 'update'
 }
 
 dependencies {

@@ -59,11 +59,11 @@ public class Launcher extends JFrame{
 
         javafxBridge = new JFXPanel();
 
-        launch = createSimpleButton("Launch App");
+        launch = createSimpleButton("Launch Game");
         launch.addActionListener(e -> launch());
         pan2.add(launch);
 
-        update = createSimpleButton("Update App");
+        update = createSimpleButton("Update Game");
         update.addActionListener(e -> {
             try {
                 new UpdateInformation(Updater.getWhatsNew());
@@ -86,6 +86,9 @@ public class Launcher extends JFrame{
         this.setSize(1280, 720);
         this.setLocationRelativeTo(null);
 
+        pan1.setBackground(Color.darkGray);
+        pan2.setBackground(Color.darkGray);
+
         Platform.runLater(() -> {
             WebView webView = new WebView();
             javafxBridge.setScene(new Scene(webView));
@@ -95,7 +98,7 @@ public class Launcher extends JFrame{
 
     private void launch() {
         try {
-            String[] run = {"java","-jar","update/blue-frame-"+ Updater.getLatestVersion()+".jar"};
+            String[] run = {"java","-jar","updater/blue-frame-"+ Updater.getLatestVersion()+".jar"};
             Runtime.getRuntime().exec(run);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -105,8 +108,8 @@ public class Launcher extends JFrame{
 
     private static JButton createSimpleButton(String text) {
         JButton button = new JButton(text);
-        button.setForeground(Color.BLACK);
-        button.setBackground(Color.WHITE);
+        button.setForeground(Color.WHITE);
+        button.setBackground(new Color(0x708090));
         Border line = new LineBorder(Color.BLACK);
         Border margin = new EmptyBorder(5, 15, 5, 15);
         Border compound = new CompoundBorder(line, margin);

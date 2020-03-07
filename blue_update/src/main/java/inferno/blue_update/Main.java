@@ -66,8 +66,8 @@ public class Main extends JFrame{
         worker.start();
     }
     private void launch() {
-        String[] run = {"java","-jar","update app.jar"};
         try {
+            String[] run = {"java","-jar","blue-frame-"+ Updater.getLatestVersion()+".jar"};
             Runtime.getRuntime().exec(run);
         } catch (Exception ex) {
             ex.printStackTrace();
