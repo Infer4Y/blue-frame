@@ -14,7 +14,6 @@ public class Main extends JFrame{
 
     private JTextArea outText;
     private JButton launch;
-    private boolean result;
 
     public Main() {
         initComponents();
@@ -78,9 +77,9 @@ public class Main extends JFrame{
     private void cleanup() {
         outText.setText(outText.getText()+"\nPreforming clean up...");
         File f = new File("update.zip");
-        result = f.delete();
+        f.deleteOnExit();
         remove(new File(root));
-        result = new File(root).delete();
+        new File(root).deleteOnExit();
     }
 
     private void remove(File f) {
@@ -89,9 +88,9 @@ public class Main extends JFrame{
         for(File ff:files) {
             if(ff.isDirectory()) {
                 remove(ff);
-                ff.delete();
+                ff.deleteOnExit();
             } else {
-                ff.delete();
+                ff.deleteOnExit();
             }
         }
     }
@@ -101,7 +100,7 @@ public class Main extends JFrame{
         for(File ff:files) {
             if(ff.isDirectory()){
                 File f1 = new File(dir+"/"+ff.getName());
-                result = f1.createNewFile();
+                f1.createNewFile();
                 copyFiles(ff,dir+"/"+ff.getName());
             } else {
 
@@ -131,15 +130,15 @@ public class Main extends JFrame{
         BufferedOutputStream dest;
         BufferedInputStream is;
         ZipEntry entry;
-        ZipFile zipfile = new ZipFile("update.zip");
+        ZipFile zipfile = new ZipFile(new File("update.zip"), ZipFile.OPEN_DELETE);
         Enumeration e = zipfile.entries();
-        result = (new File(root)).mkdirs();
+        (new File(root)).mkdirs();
         while(e.hasMoreElements()) {
             entry = (ZipEntry) e.nextElement();
             outText.setText(outText.getText()+"\nExtracting: " +entry);
-            if(entry.isDirectory()) { result = (new File(root + entry.getName())).mkdirs();
+            if(entry.isDirectory()) { (new File(root + entry.getName())).mkdirs();
             } else {
-                result = (new File(root+entry.getName())).createNewFile();
+                (new File(root+entry.getName())).createNewFile();
                 is = new BufferedInputStream(zipfile.getInputStream(entry));
                 int count;
                 byte[] data = new byte[BUFFER];

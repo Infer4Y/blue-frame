@@ -98,7 +98,7 @@ public class Launcher extends JFrame{
 
     private void launch() {
         try {
-            String[] run = {"java","-jar","updater/blue-frame-"+ Updater.getLatestVersion()+".jar"};
+            String[] run = {"java","-jar","blue-frame-"+ Updater.getLatestVersion()+".jar"};
             Runtime.getRuntime().exec(run);
         } catch (Exception ex) {
             ex.printStackTrace();
