@@ -106,7 +106,7 @@ public class Launcher extends JFrame{
         System.exit(0);
     }
 
-    private static JButton createSimpleButton(String text) {
+    public static JButton createSimpleButton(String text) {
         JButton button = new JButton(text);
         button.setForeground(Color.WHITE);
         button.setBackground(new Color(0x708090));

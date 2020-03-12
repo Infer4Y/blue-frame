@@ -1,10 +1,16 @@
 package inferno.blue_update;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -17,6 +23,7 @@ public class Main extends JFrame{
 
     public Main() {
         initComponents();
+        setLocationRelativeTo(null);
         outText.setText("Contacting Download Server...");
         download();
     }
@@ -25,19 +32,25 @@ public class Main extends JFrame{
 
         JPanel pan1 = new JPanel();
         pan1.setLayout(new BorderLayout());
+        pan1.setBackground(Color.darkGray);
 
         JPanel pan2 = new JPanel();
         pan2.setLayout(new FlowLayout());
+        pan2.setBackground(Color.darkGray);
 
         outText = new JTextArea();
+        outText.setEditable(false);
+        outText.setForeground(new Color(0x708090));
+        outText.setBackground(Color.darkGray);
+        outText.setFont(outText.getFont().deriveFont(Font.BOLD, 16f));
         JScrollPane sp = new JScrollPane();
         sp.setViewportView(outText);
 
-        launch = new JButton("Launch App");
+        launch = createSimpleButton("Launch App");
         launch.setEnabled(false);
         launch.addActionListener(e -> launch());
         pan2.add(launch);
-        JButton cancel = new JButton("Cancel Update");
+        JButton cancel = createSimpleButton("Cancel Update");
         cancel.addActionListener(e -> System.exit(0));
         pan2.add(cancel);
         pan1.add(sp,BorderLayout.CENTER);
@@ -76,10 +89,13 @@ public class Main extends JFrame{
 
     private void cleanup() {
         outText.setText(outText.getText()+"\nPreforming clean up...");
-        File f = new File("update.zip");
-        f.deleteOnExit();
+        try {
+            Files.deleteIfExists(Paths.get(new File("update.zip").toURI()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         remove(new File(root));
-        new File(root).deleteOnExit();
+        new File(root).delete();
     }
 
     private void remove(File f) {
@@ -88,9 +104,9 @@ public class Main extends JFrame{
         for(File ff:files) {
             if(ff.isDirectory()) {
                 remove(ff);
-                ff.deleteOnExit();
+                ff.delete();
             } else {
-                ff.deleteOnExit();
+                ff.delete();
             }
         }
     }
@@ -130,7 +146,7 @@ public class Main extends JFrame{
         BufferedOutputStream dest;
         BufferedInputStream is;
         ZipEntry entry;
-        ZipFile zipfile = new ZipFile(new File("update.zip"), ZipFile.OPEN_DELETE);
+        ZipFile zipfile = new ZipFile("update.zip");
         Enumeration e = zipfile.entries();
         (new File(root)).mkdirs();
         while(e.hasMoreElements()) {
@@ -152,7 +168,7 @@ public class Main extends JFrame{
                 is.close();
             }
         }
-
+        zipfile.close();
     }
 
     private void downloadFile(String link) throws IOException {
@@ -189,6 +205,18 @@ public class Main extends JFrame{
         }
         return buffer.substring(buffer.indexOf("[url]")+5,buffer.indexOf("[/url]"));
     }
+
+    private static JButton createSimpleButton(String text) {
+        JButton button = new JButton(text);
+        button.setForeground(Color.WHITE);
+        button.setBackground(new Color(0x708090));
+        Border line = new LineBorder(Color.BLACK);
+        Border margin = new EmptyBorder(5, 15, 5, 15);
+        Border compound = new CompoundBorder(line, margin);
+        button.setBorder(compound);
+        return button;
+    }
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> new Main().setVisible(true));
     }

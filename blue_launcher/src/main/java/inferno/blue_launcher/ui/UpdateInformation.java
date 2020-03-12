@@ -1,5 +1,7 @@
 package inferno.blue_launcher.ui;
 
+import inferno.blue_launcher.Launcher;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,20 +20,25 @@ public class UpdateInformation extends JFrame{
         this.setTitle("New Update Found");
         JPanel pan1 = new JPanel();
         pan1.setLayout(new BorderLayout());
+        pan1.setBackground(Color.darkGray);
 
         JPanel pan2 = new JPanel();
         pan2.setLayout(new FlowLayout());
+        pan2.setBackground(Color.darkGray);
 
         infoPane = new JEditorPane();
-        infoPane.setContentType("text/html");
+        infoPane.setEditable(false);
+        infoPane.setForeground(new Color(0x708090));
+        infoPane.setBackground(Color.darkGray);
+        infoPane.setFont(infoPane.getFont().deriveFont(Font.BOLD, 14f));
 
         JScrollPane scp = new JScrollPane();
         scp.setViewportView(infoPane);
 
-        JButton ok = new JButton("Update");
+        JButton ok = Launcher.createSimpleButton("Update");
         ok.addActionListener(e -> update());
 
-        JButton cancel = new JButton("Cancel");
+        JButton cancel = Launcher.createSimpleButton("Cancel");
         cancel.addActionListener(e -> UpdateInformation.this.dispose());
         pan2.add(ok);
         pan2.add(cancel);
