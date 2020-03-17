@@ -45,10 +45,10 @@ public class TileModel {
     }
 
     public void render() {
-        Shader.TILE.enable();
-        Shader.TILE.setUniformMat4f("ml_matrix", Matrix4f.translate(position).multiply(Matrix4f.rotate(rot)));
+        //Shader.TILE.enable();
+        //Shader.TILE.setUniformMat4f("ml_matrix", Matrix4f.translate(position).multiply(Matrix4f.rotate(rot)));
         texture.bind();
         mesh.render();
-        Shader.TILE.disable();
+        //Shader.TILE.disable();
     }
 }
