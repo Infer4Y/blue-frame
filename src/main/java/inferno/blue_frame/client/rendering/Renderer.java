@@ -11,12 +11,19 @@ public class Renderer {
 
 
     public Renderer() {
-        renderlist.put(0, new LinkedList<Renderable>());
-        renderlist.put(1, new LinkedList<Renderable>());
-        renderlist.put(2, new LinkedList<Renderable>());
+        renderlist.put(0, new LinkedList<>());
+        renderlist.put(1, new LinkedList<>());
+        renderlist.put(2, new LinkedList<>());
     }
 
     public void render(){
+
+        for ( LinkedList<Renderable> renderables : renderlist.values() ) {
+            for (Renderable renderable : renderables){
+                renderable.render();
+            }
+        }
+
     }
 
 
@@ -26,8 +33,8 @@ public class Renderer {
 
     public void clear() {
         renderlist.clear();
-        renderlist.put(0, new LinkedList<Renderable>());
-        renderlist.put(1, new LinkedList<Renderable>());
-        renderlist.put(2, new LinkedList<Renderable>());
+        renderlist.put(0, new LinkedList<>());
+        renderlist.put(1, new LinkedList<>());
+        renderlist.put(2, new LinkedList<>());
     }
 }
