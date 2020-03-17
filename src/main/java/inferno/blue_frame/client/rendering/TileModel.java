@@ -4,6 +4,7 @@ import inferno.blue_frame.client.assets.Shader;
 import inferno.blue_frame.client.assets.Texture;
 import inferno.blue_frame.common.utils.Matrix4f;
 import org.joml.Vector3f;
+import org.lwjgl.opengl.GL11;
 
 public class TileModel {
     private float SIZE = 1.0f;

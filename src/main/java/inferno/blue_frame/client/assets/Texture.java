@@ -1,11 +1,10 @@
 package inferno.blue_frame.client.assets;
 
 import inferno.blue_frame.client.utils.BufferUtils;
-import org.lwjgl.opengl.GL11;
+import static org.lwjgl.opengl.GL11.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 public class Texture {
@@ -20,7 +19,7 @@ public class Texture {
     private int load(String path) {
         int[] pixels = null;
         try {
-            BufferedImage image = ImageIO.read(getClass().getClassLoader().getResourceAsStream(path));
+            BufferedImage image = ImageIO.read(Texture.class.getClassLoader().getResourceAsStream(path));
             width = image.getWidth();
             height = image.getHeight();
             pixels = new int[width * height];
@@ -39,21 +38,21 @@ public class Texture {
             data[i] = a << 24 | b << 16 | g << 8 | r;
         }
 
-        int result = GL11.glGenTextures();
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, result);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, BufferUtils.createIntBuffer(data));
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+        int result = glGenTextures();
+        glBindTexture(GL_TEXTURE_2D, result);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, BufferUtils.createIntBuffer(data));
+        glBindTexture(GL_TEXTURE_2D, 0);
         return result;
     }
 
     public void bind() {
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
     }
 
     public void unbind() {
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
 }

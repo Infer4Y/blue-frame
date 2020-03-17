@@ -10,6 +10,8 @@ import java.nio.IntBuffer;
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -78,12 +80,10 @@ public abstract class ClientWindow {
         GL.createCapabilities();
         initTwo();
 
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity(); // Resets any previous projection matrices
-        glOrtho(0, 640, 480, 0, 1, -1);
-        glMatrixMode(GL_MODELVIEW);
-
-        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_DEPTH_TEST);
+        glActiveTexture(GL_TEXTURE1);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         long lastTime = System.nanoTime();
         double delta = 0.0;
@@ -108,6 +108,10 @@ public abstract class ClientWindow {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             render();
+
+            int error = glGetError();
+            if (error != GL_NO_ERROR)
+                System.out.println(error);
 
             glfwSwapBuffers(window);
             glfwPollEvents();
