@@ -7,11 +7,11 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 
 public class TileModel {
-    private float SIZE = 1.0f;
+    private float SIZE = 2.0f;
     private VertexArray mesh;
     private Texture texture;
 
-    private Vector3f position = new Vector3f(1f,1f,1f);
+    private Vector3f position = new Vector3f(0f,0f,-1f);
     private float rot = 0.0f;
     private float delta = 0.0f;
 
@@ -45,10 +45,34 @@ public class TileModel {
     }
 
     public void render() {
-        //Shader.TILE.enable();
-        //Shader.TILE.setUniformMat4f("ml_matrix", Matrix4f.translate(position).multiply(Matrix4f.rotate(rot)));
+        Shader.TILE.enable();
+        Shader.TILE.setUniformMat4f("ml_matrix", Matrix4f.translate(position).multiply(Matrix4f.rotate(rot)));
         texture.bind();
         mesh.render();
-        //Shader.TILE.disable();
+        Shader.TILE.disable();
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
+    public Texture getTexture() {
+        return texture;
+    }
+
+    public void setPos(Vector3f pos) {
+        this.position = pos;
+    }
+
+    public void setPos(float x, float y, float z) {
+        this.position = new Vector3f(x, y, z);
+    }
+
+    public float getRot() {
+        return rot;
+    }
+
+    public void setRot(float rot) {
+        this.rot = rot;
     }
 }
