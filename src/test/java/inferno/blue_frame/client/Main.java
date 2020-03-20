@@ -17,14 +17,28 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Main {
     private static ClientWindow windowClient;
     private static Random random = new Random();
+    public static int[][] map = new int[][]{
+            { 0, 0, 1, 2, 3, 3, 2, 1, 0, 0},//1
+            { 0, 1, 2, 3, 4, 4, 3, 2, 1, 0},//2
+            { 1, 2, 3, 4, 3, 3, 4, 3, 2, 1},//3
+            { 2, 3, 4, 3, 2, 2, 3, 4, 3, 2},//4
+            { 3, 4, 3, 2, 1, 1, 2, 3, 4, 3},//5
+            { 3, 4, 3, 2, 1, 1, 2, 3, 4, 3},//6
+            { 2, 3, 4, 3, 2, 2, 3, 4, 3, 2},//7
+            { 1, 2, 3, 4, 3, 3, 4, 3, 2, 1},//8
+            { 0, 1, 2, 3, 4, 4, 3, 2, 1, 0},//9
+            { 0, 0, 1, 2, 3, 3, 2, 1, 0, 0} //10
+    };
 
     public static void main(String[] args){
 
         windowClient = new ClientWindow("LWJGL Test 1.2", WindowReference.width, WindowReference.height){
             Texture[] textures;
             TileModel tileRenderer;
-            int textureId = 0;
             int updates = 0;
+            boolean render;
+
+
 
             @Override
             public void initTwo(){
@@ -42,29 +56,10 @@ public class Main {
                 };
 
                 tileRenderer = new TileModel(textures[0]);
+            }
 
-                glfwSetKeyCallback(super.getWindow(), GLFWKeyCallback.create((window, key, scancode, action, mods) -> {
-                    if ( key == GLFW_KEY_W ) {
-                        tileRenderer.setRot(tileRenderer.getRot()+1.5f);
-                    } else if ( key == GLFW_KEY_S ) {
-                        tileRenderer.setRot(tileRenderer.getRot()-1.5f);
-                    }
-
-                    if ( key == GLFW_KEY_A ) {
-                        if ( textureId == textures.length-1 ) {
-                            textureId = 0;
-                        } else {
-                            textureId++;
-                        }
-                    } else if ( key == GLFW_KEY_D ) {
-                        if ( textureId == 0 ) {
-                            textureId = textures.length-1;
-                        } else {
-                            textureId--;
-                        }
-                    }
-
-                }));
+            public boolean isKeyPressed(int keyCode) {
+                return glfwGetKey(this.getWindow(), keyCode) == GLFW_PRESS;
             }
 
             @Override
@@ -72,8 +67,29 @@ public class Main {
                 super.update();
                 tileRenderer.update();
 
-                if ( updates == 5 ){
-                    //tileRenderer.setRot(tileRenderer.getRot()+.5f);
+                {
+                    if (isKeyPressed(GLFW_KEY_W)) {
+                        tileRenderer.setRot(tileRenderer.getRot() + 1.5f);
+                    }
+                    if (isKeyPressed(GLFW_KEY_S)) {
+                        tileRenderer.setRot(tileRenderer.getRot() - 1.5f);
+                    }
+                    if (isKeyPressed(GLFW_KEY_A)) {
+                    }
+                    if (isKeyPressed(GLFW_KEY_D)) {
+                    }
+                }
+
+                if ( updates == 10 ){
+                    for (int i = 0; i < map.length; i++) {
+                        for (int j = 0; j < map[i].length; j++) {
+                            if ( map[i][j] == textures.length-1 ) {
+                                map[i][j] = 0;
+                            } else {
+                                map[i][j]++;
+                            }
+                        }
+                    }
                     updates = 0;
                 } else {
                     updates++;
@@ -86,26 +102,13 @@ public class Main {
 
                 GL11.glColor3f(.5f, 1f,0f);
 
-                for (int i = 0; i < 10; i++) {
-                    for (int j = 0; j < 10; j++) {
-                        tileRenderer.setPos((i*2)-9,(j*2)-9,-1f);
+                for (int i = 0; i < map.length; i++) {
+                    for (int j = 0; j < map[i].length; j++) {
+                        tileRenderer.setPos((i * 2) - 9, (j * 2) - 9, -1f);
 
-                        tileRenderer.setTexture(textures[textureId]);
+                        tileRenderer.setTexture(textures[map[i][j]]);
 
                         tileRenderer.render();
-
-
-                        if ( textureId == textures.length-1 ) {
-                            textureId = 0;
-                        } else {
-                            textureId++;
-                        }
-                    }
-
-                    if ( textureId == textures.length-1 ) {
-                        textureId = 0;
-                    } else {
-                        textureId++;
                     }
                 }
             }

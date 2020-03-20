@@ -19,6 +19,20 @@ switch (OperatingSystem.current()) {
         break
 }
 
+task customFatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'inferno.blue_frame.client.main'
+    }
+    baseName = 'Blue_Frame'
+
+    from sourceSets.main.output
+
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+    }
+}
+
 
 group 'inferno'
 version '1.0-SNAPSHOT'
