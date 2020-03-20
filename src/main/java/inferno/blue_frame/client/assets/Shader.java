@@ -29,6 +29,14 @@ public class Shader {
         TILE = new Shader(new ResourceLocation("shaders/tile.vert"), new ResourceLocation("shaders/tile.frag"));
     }
 
+    public static void deleteAll() {
+        TILE.delete();
+    }
+
+    private void delete() {
+        GL20.glDeleteProgram(ID);
+    }
+
     public int getUniform(String name) {
         if (locationCache.containsKey(name))
             return locationCache.get(name);

@@ -1,5 +1,6 @@
 package inferno.blue_frame.client.window;
 
+import inferno.blue_frame.client.assets.Shader;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
@@ -29,6 +30,8 @@ public abstract class ClientWindow {
         loop();
         glfwFreeCallbacks(window);
         glfwDestroyWindow(window);
+
+        Shader.deleteAll();
 
         // Terminate GLFW and free the error callback
         glfwTerminate();

@@ -21,7 +21,7 @@ switch (OperatingSystem.current()) {
 
 task customFatJar(type: Jar) {
     manifest {
-        attributes 'Main-Class': 'inferno.blue_frame.client.main'
+        attributes 'Main-Class': 'inferno.blue_frame.client.Main'
     }
     baseName = 'blue-frame'
 

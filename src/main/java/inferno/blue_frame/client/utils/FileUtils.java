@@ -1,25 +1,23 @@
 package inferno.blue_frame.client.utils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class FileUtils {
 
     public static String loadAsString(String file) {
-        StringBuilder result = new StringBuilder();
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(FileUtils.class.getClassLoader().getResource(file).getFile()));
-            String buffer;
-            while ((buffer = reader.readLine()) != null) {
-                result.append(buffer).append('\n');
+        StringBuilder builder = new StringBuilder();
+
+        try (InputStream in = FileUtils.class.getClassLoader().getResourceAsStream(file);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line).append("\n");
             }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            throw new RuntimeException("Failed to load a shader file!"
+                    + System.lineSeparator() + ex.getMessage());
         }
-        return result.toString();
+        return builder.toString();
     }
 
 }
