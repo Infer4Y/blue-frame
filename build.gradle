@@ -23,7 +23,7 @@ task customFatJar(type: Jar) {
     manifest {
         attributes 'Main-Class': 'inferno.blue_frame.client.main'
     }
-    baseName = 'Blue_Frame'
+    baseName = 'blue-frame'
 
     from sourceSets.main.output
 
