@@ -66,7 +66,9 @@ public class Main extends JFrame{
             try {
                 downloadFile(getDownloadLinkFromHost());
                 unzip();
-                copyFiles(new File(root), new File("").getAbsolutePath());
+                new File("updater/").mkdir();
+                new File("updater/update/").mkdir();
+                copyFiles(new File(root), new File("updater/update/").getAbsolutePath());
                 cleanup();
                 launch.setEnabled(true);
                 outText.setText(outText.getText() + "\nUpdate Finished!");
@@ -79,7 +81,7 @@ public class Main extends JFrame{
     }
     private void launch() {
         try {
-            String[] run = {"java","-jar","blue-frame-"+ Updater.getLatestVersion()+".jar"};
+            String[] run = {"java","-jar","updater/update/blue-frame-"+ Updater.getLatestVersion()+".jar"};
             Runtime.getRuntime().exec(run);
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -32,7 +32,7 @@ public class Launcher extends JFrame{
 
         if (netIsAvailable()) {
             try {
-                if (!(new File("update/blue-frame-" + Updater.getLatestVersion() + ".jar").exists())) {
+                if (!(new File("updater/update/blue-frame-" + Updater.getLatestVersion() + ".jar").exists())) {
                     new UpdateInformation(Updater.getWhatsNew());
                     launch.setEnabled(false);
                     launch.setToolTipText("Sorry. Please update to the latest version.");
@@ -98,7 +98,7 @@ public class Launcher extends JFrame{
 
     private void launch() {
         try {
-            String[] run = {"java","-jar","blue-frame-"+ Updater.getLatestVersion()+".jar"};
+            String[] run = {"java","-jar","updater/update/blue-frame-"+ Updater.getLatestVersion()+".jar"};
             Runtime.getRuntime().exec(run);
         } catch (Exception ex) {
             ex.printStackTrace();
