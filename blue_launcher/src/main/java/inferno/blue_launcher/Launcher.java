@@ -7,6 +7,7 @@ import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -17,6 +18,7 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Objects;
 
 public class Launcher extends JFrame{
 
@@ -27,6 +29,11 @@ public class Launcher extends JFrame{
     //private boolean result;
 
     public Launcher() {
+        try {
+            setIconImage(ImageIO.read(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("blue_launcher_icon.png"))));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         initComponents();
         setBackground(Color.black);
 

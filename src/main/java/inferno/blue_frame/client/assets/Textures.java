@@ -11,7 +11,7 @@ public class Textures {
 
     public static void registerTexture(Tile tile) {
         LinkedList<Texture> temp = new LinkedList<>();
-        temp.add(new Texture(new ResourceLocation(tile.getName())));
+        temp.add(new Texture(new ResourceLocation("textures/tiles/<NAME>.png".replace("<NAME>",tile.getRegistryName()))));
         TEXTURE_MAP.put(tile.getName(), temp);
     }
 

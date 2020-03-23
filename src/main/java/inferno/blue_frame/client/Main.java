@@ -17,28 +17,15 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Main {
     private static ClientWindow windowClient;
     private static Random random = new Random();
-    public static int[][] map = new int[][]{
-            { 0, 0, 1, 2, 3, 3, 2, 1, 0, 0},//1
-            { 0, 1, 2, 3, 4, 4, 3, 2, 1, 0},//2
-            { 1, 2, 3, 4, 3, 3, 4, 3, 2, 1},//3
-            { 2, 3, 4, 3, 2, 2, 3, 4, 3, 2},//4
-            { 3, 4, 3, 2, 1, 1, 2, 3, 4, 3},//5
-            { 3, 4, 3, 2, 1, 1, 2, 3, 4, 3},//6
-            { 2, 3, 4, 3, 2, 2, 3, 4, 3, 2},//7
-            { 1, 2, 3, 4, 3, 3, 4, 3, 2, 1},//8
-            { 0, 1, 2, 3, 4, 4, 3, 2, 1, 0},//9
-            { 0, 0, 1, 2, 3, 3, 2, 1, 0, 0} //10
-    };
+    public static int[][] map = new int[10][10];
 
     public static void main(String[] args){
 
-        windowClient = new ClientWindow("LWJGL Test 1.2", WindowReference.width, WindowReference.height){
+        windowClient = new ClientWindow("LWJGL Test 1.5", WindowReference.width, WindowReference.height){
             Texture[] textures;
             TileModel tileRenderer;
             int updates = 0;
             boolean render;
-
-
 
             @Override
             public void initTwo(){
@@ -52,8 +39,32 @@ public class Main {
                         new Texture(new ResourceLocation("textures/tiles/diag_brick.png")),
                         new Texture(new ResourceLocation("textures/tiles/tile.png")),
                         new Texture(new ResourceLocation("textures/tiles/black_tile.png")),
-                        new Texture(new ResourceLocation("textures/tiles/stone.png"))
+                        new Texture(new ResourceLocation("textures/tiles/aluminum.png")),
+                        new Texture(new ResourceLocation("textures/tiles/cobalt.png")),
+                        new Texture(new ResourceLocation("textures/tiles/iron.png")),
+                        new Texture(new ResourceLocation("textures/tiles/blue_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/magenta_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/purple_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/red_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/orange_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/yellow_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/green_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/grey_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/dark_grey_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/white_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/stone.png")),
+                        new Texture(new ResourceLocation("textures/tiles/placeholder.png"))
                 };
+
+                for (int i = 0; i < map.length; i++) {
+                    for (int j = 0; j < map[i].length; j++) {
+                        if ( i+j > textures.length-1 ) {
+                            map[i][j] = 0;
+                        } else {
+                            map[i][j] = i+j;
+                        }
+                    }
+                }
 
                 tileRenderer = new TileModel(textures[0]);
             }

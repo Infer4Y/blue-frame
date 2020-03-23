@@ -7,6 +7,8 @@ public class Renderer {
     // Int : Layer = 3
     private HashMap<Integer, LinkedList<Renderable>> renderlist = new HashMap<>();
 
+    private TileModel tileRenderer = new TileModel(null);
+
     public Camera camera = new Camera(150,150);
 
 

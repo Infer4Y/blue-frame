@@ -1,5 +1,6 @@
 package inferno.blue_update;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -12,6 +13,7 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Enumeration;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -22,6 +24,12 @@ public class Main extends JFrame{
     private JButton launch;
 
     public Main() {
+        try {
+            setIconImage(ImageIO.read(Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("blue_update_icon.png"))));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         initComponents();
         setLocationRelativeTo(null);
         outText.setText("Contacting Download Server...");

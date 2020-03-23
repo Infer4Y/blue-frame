@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL11.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Texture {
 
@@ -19,7 +20,7 @@ public class Texture {
     private int load(String path) {
         int[] pixels = null;
         try {
-            BufferedImage image = ImageIO.read(Texture.class.getClassLoader().getResourceAsStream(path));
+            BufferedImage image = ImageIO.read(Objects.requireNonNull(Texture.class.getClassLoader().getResourceAsStream(path)));
             width = image.getWidth();
             height = image.getHeight();
             pixels = new int[width * height];

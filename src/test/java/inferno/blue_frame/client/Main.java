@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 
 public class Main {
     private static ClientWindow windowClient;
@@ -34,15 +35,17 @@ public class Main {
 
         windowClient = new ClientWindow("LWJGL Test 1.2", WindowReference.width, WindowReference.height){
             Texture[] textures;
-            TileModel tileRenderer;
-            int updates = 0;
-            boolean render;
-
-
 
             @Override
             public void initTwo(){
                 Shader.loadAll();
+                glMatrixMode(GL_PROJECTION);
+                glLoadIdentity();
+                glOrtho(0, 640, 480, 0, 1, -1);
+                glMatrixMode(GL_MODELVIEW);
+                glEnable(GL_TEXTURE_2D);
+                glEnable(GL_BLEND);
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
                 Matrix4f pr_matrix = Matrix4f.orthographic(-10.0f, 10.0f, -10.0f, 10.0f, -1.0f, 1.0f);
                 Shader.TILE.setUniformMat4f("pr_matrix", pr_matrix);
                 Shader.TILE.setUniform1i("tex", 1);
@@ -52,10 +55,23 @@ public class Main {
                         new Texture(new ResourceLocation("textures/tiles/diag_brick.png")),
                         new Texture(new ResourceLocation("textures/tiles/tile.png")),
                         new Texture(new ResourceLocation("textures/tiles/black_tile.png")),
-                        new Texture(new ResourceLocation("textures/tiles/stone.png"))
+                        new Texture(new ResourceLocation("textures/tiles/aluminum.png")),
+                        new Texture(new ResourceLocation("textures/tiles/cobalt.png")),
+                        new Texture(new ResourceLocation("textures/tiles/iron.png")),
+                        new Texture(new ResourceLocation("textures/tiles/blue_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/magenta_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/purple_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/red_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/orange_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/yellow_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/green_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/grey_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/dark_grey_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/white_glass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/stone.png")),
+                        new Texture(new ResourceLocation("textures/tiles/place_holder.png"))
                 };
 
-                tileRenderer = new TileModel(textures[0]);
             }
 
             public boolean isKeyPressed(int keyCode) {
@@ -65,35 +81,8 @@ public class Main {
             @Override
             public void update() {
                 super.update();
-                tileRenderer.update();
 
-                {
-                    if (isKeyPressed(GLFW_KEY_W)) {
-                        tileRenderer.setRot(tileRenderer.getRot() + 1.5f);
-                    }
-                    if (isKeyPressed(GLFW_KEY_S)) {
-                        tileRenderer.setRot(tileRenderer.getRot() - 1.5f);
-                    }
-                    if (isKeyPressed(GLFW_KEY_A)) {
-                    }
-                    if (isKeyPressed(GLFW_KEY_D)) {
-                    }
-                }
-
-                if ( updates == 10 ){
-                    for (int i = 0; i < map.length; i++) {
-                        for (int j = 0; j < map[i].length; j++) {
-                            if ( map[i][j] == textures.length-1 ) {
-                                map[i][j] = 0;
-                            } else {
-                                map[i][j]++;
-                            }
-                        }
-                    }
-                    updates = 0;
-                } else {
-                    updates++;
-                }
+                // Handle input
             }
 
             @Override
@@ -102,15 +91,7 @@ public class Main {
 
                 GL11.glColor3f(.5f, 1f,0f);
 
-                for (int i = 0; i < map.length; i++) {
-                    for (int j = 0; j < map[i].length; j++) {
-                        tileRenderer.setPos((i * 2) - 9, (j * 2) - 9, -1f);
-
-                        tileRenderer.setTexture(textures[map[i][j]]);
-
-                        tileRenderer.render();
-                    }
-                }
+                // Render code
             }
         };
     }
