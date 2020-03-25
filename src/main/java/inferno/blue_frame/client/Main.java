@@ -3,6 +3,8 @@ package inferno.blue_frame.client;
 import inferno.blue_frame.client.assets.ResourceLocation;
 import inferno.blue_frame.client.assets.Shader;
 import inferno.blue_frame.client.assets.Texture;
+import inferno.blue_frame.client.audio.AudioMaster;
+import inferno.blue_frame.client.audio.Source;
 import inferno.blue_frame.client.rendering.TileModel;
 import inferno.blue_frame.client.utils.WindowReference;
 import inferno.blue_frame.client.window.ClientWindow;
@@ -24,11 +26,15 @@ public class Main {
         windowClient = new ClientWindow("LWJGL Test 1.5", WindowReference.width, WindowReference.height){
             Texture[] textures;
             TileModel tileRenderer;
+            Source source = new Source();
             int updates = 0;
             boolean render;
 
             @Override
             public void initTwo(){
+                AudioMaster.init();
+                AudioMaster.setListenerData();
+
                 Shader.loadAll();
                 Matrix4f pr_matrix = Matrix4f.orthographic(-10.0f, 10.0f, -10.0f, 10.0f, -1.0f, 1.0f);
                 Shader.TILE.setUniformMat4f("pr_matrix", pr_matrix);
@@ -40,7 +46,12 @@ public class Main {
                         new Texture(new ResourceLocation("textures/tiles/tile.png")),
                         new Texture(new ResourceLocation("textures/tiles/black_tile.png")),
                         new Texture(new ResourceLocation("textures/tiles/aluminum.png")),
+                        new Texture(new ResourceLocation("textures/tiles/brass.png")),
+                        new Texture(new ResourceLocation("textures/tiles/carbon.png")),
                         new Texture(new ResourceLocation("textures/tiles/cobalt.png")),
+                        new Texture(new ResourceLocation("textures/tiles/coal.png")),
+                        new Texture(new ResourceLocation("textures/tiles/copper.png")),
+                        new Texture(new ResourceLocation("textures/tiles/gold.png")),
                         new Texture(new ResourceLocation("textures/tiles/iron.png")),
                         new Texture(new ResourceLocation("textures/tiles/blue_glass.png")),
                         new Texture(new ResourceLocation("textures/tiles/magenta_glass.png")),
@@ -88,6 +99,7 @@ public class Main {
                     if (isKeyPressed(GLFW_KEY_A)) {
                     }
                     if (isKeyPressed(GLFW_KEY_D)) {
+                        source.play(AudioMaster.HIT.getID());
                     }
                 }
 
@@ -123,6 +135,16 @@ public class Main {
                     }
                 }
             }
+
+            @Override
+            public void clean() {
+                super.clean();
+                source.delete();
+                AudioMaster.cleanUp();
+                Shader.deleteAll();
+            }
         };
+
+
     }
 }

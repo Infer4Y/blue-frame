@@ -31,11 +31,14 @@ public abstract class ClientWindow {
         glfwFreeCallbacks(window);
         glfwDestroyWindow(window);
 
-        Shader.deleteAll();
+        clean();
 
         // Terminate GLFW and free the error callback
         glfwTerminate();
         glfwSetErrorCallback(null).free();
+    }
+
+    public void clean() {
     }
 
     private void init(){
