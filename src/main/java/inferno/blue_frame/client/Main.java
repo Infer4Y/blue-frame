@@ -26,7 +26,7 @@ public class Main {
         windowClient = new ClientWindow("LWJGL Test 1.5", WindowReference.width, WindowReference.height){
             Texture[] textures;
             TileModel tileRenderer;
-            Source source = new Source();
+            Source source;
             int updates = 0;
             boolean render;
 
@@ -34,6 +34,7 @@ public class Main {
             public void initTwo(){
                 AudioMaster.init();
                 AudioMaster.setListenerData();
+                source  = new Source();
 
                 Shader.loadAll();
                 Matrix4f pr_matrix = Matrix4f.orthographic(-10.0f, 10.0f, -10.0f, 10.0f, -1.0f, 1.0f);
@@ -99,7 +100,11 @@ public class Main {
                     if (isKeyPressed(GLFW_KEY_A)) {
                     }
                     if (isKeyPressed(GLFW_KEY_D)) {
-                        source.play(AudioMaster.HIT.getID());
+                        //source.play(AudioMaster.HIT.getID());
+                        //source.play(AudioMaster.COIN.getID());
+                        //source.play(AudioMaster.BLOCK_BREAK.getID());
+                        //source.play(AudioMaster.TELEPORT_IN.getID());
+                        source.play(AudioMaster.TELEPORT_OUT.getID());
                     }
                 }
 
