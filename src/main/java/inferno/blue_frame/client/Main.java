@@ -89,48 +89,12 @@ public class Main {
 
                 {
                     if (isKeyPressed(GLFW_KEY_W)) {
-                        for (int i = 0; i < map.length; i++) {
-                            for (int j = 0; j < map[i].length; j++) {
-                                if ( map[i][j] == textures.length-1 ) {
-                                    map[i][j] = 0;
-                                } else {
-                                    map[i][j]++;
-                                }
-                            }
-                        }
                     }
                     if (isKeyPressed(GLFW_KEY_S)) {
-                        for (int i = 0; i < map.length; i++) {
-                            for (int j = 0; j < map[i].length; j++) {
-                                if ( map[i][j] == textures.length-1 ) {
-                                    map[i][j] = 0;
-                                } else {
-                                    map[i][j]+=1;
-                                }
-                            }
-                        }
                     }
                     if (isKeyPressed(GLFW_KEY_A)) {
-                        for (int i = 0; i < map.length; i++) {
-                            for (int j = 0; j < map[i].length; j++) {
-                                if ( map[i][j] == textures.length-1 ) {
-                                    map[i][j] = 0;
-                                } else {
-                                    map[i][j]++;
-                                }
-                            }
-                        }
                     }
                     if (isKeyPressed(GLFW_KEY_D)) {
-                        for (int i = 0; i < map.length; i++) {
-                            for (int j = 0; j < map[i].length; j++) {
-                                if ( map[i][j] == textures.length-1 ) {
-                                    map[i][j] = 0;
-                                } else {
-                                    map[i][j]++;
-                                }
-                            }
-                        }
                     }
                 }
             }
@@ -140,16 +104,11 @@ public class Main {
                 super.render();
 
                 GL11.glColor3f(.5f, 1f,0f);
+                //        tileRenderer.setPos((i * 2) - 9, (j * 2) - 9, -1f);
 
-                for (int i = 0; i < map.length; i++) {
-                    for (int j = 0; j < map[i].length; j++) {
-                        tileRenderer.setPos((i * 2) - 9, (j * 2) - 9, -1f);
+                 //       tileRenderer.setTexture(textures[0]);
 
-                        tileRenderer.setTexture(textures[map[i][j]]);
-
-                        tileRenderer.render();
-                    }
-                }
+                  //      tileRenderer.render();
             }
 
             @Override
