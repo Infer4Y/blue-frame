@@ -8,7 +8,7 @@ public class Source {
 
     public Source() {
         ID = AL10.alGenSources();
-        AL10.alSourcef(ID, AL10.AL_GAIN, 1);
+        AL10.alSourcef(ID, AL10.AL_GAIN, .25f);
         AL10.alSourcef(ID, AL10.AL_PITCH, 1);
         AL10.alSource3f(ID, AL10.AL_POSITION, 0,0,0);
     }

@@ -9,6 +9,7 @@ import inferno.blue_frame.client.rendering.TileModel;
 import inferno.blue_frame.client.utils.WindowReference;
 import inferno.blue_frame.client.window.ClientWindow;
 import inferno.blue_frame.common.utils.Matrix4f;
+import inferno.blue_frame.common.world.chunks.Chunk;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL11;
 
@@ -19,7 +20,7 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Main {
     private static ClientWindow windowClient;
     private static Random random = new Random();
-    public static int[][] map = new int[10][10];
+    public static Chunk chunk = new Chunk();
 
     public static void main(String[] args){
 
@@ -68,13 +69,9 @@ public class Main {
                         new Texture(new ResourceLocation("textures/tiles/placeholder.png"))
                 };
 
-                for (int i = 0; i < map.length; i++) {
-                    for (int j = 0; j < map[i].length; j++) {
-                        if ( i+j > textures.length-1 ) {
-                            map[i][j] = 0;
-                        } else {
-                            map[i][j] = i+j;
-                        }
+                for (int i = 0; i < 16; i++) {
+                    for (int j = 0; j < 16; j++) {
+
                     }
                 }
 
@@ -92,35 +89,49 @@ public class Main {
 
                 {
                     if (isKeyPressed(GLFW_KEY_W)) {
-                        tileRenderer.setRot(tileRenderer.getRot() + 1.5f);
-                    }
-                    if (isKeyPressed(GLFW_KEY_S)) {
-                        tileRenderer.setRot(tileRenderer.getRot() - 1.5f);
-                    }
-                    if (isKeyPressed(GLFW_KEY_A)) {
-                    }
-                    if (isKeyPressed(GLFW_KEY_D)) {
-                        //source.play(AudioMaster.HIT.getID());
-                        //source.play(AudioMaster.COIN.getID());
-                        //source.play(AudioMaster.BLOCK_BREAK.getID());
-                        //source.play(AudioMaster.TELEPORT_IN.getID());
-                        source.play(AudioMaster.TELEPORT_OUT.getID());
-                    }
-                }
-
-                if ( updates == 10 ){
-                    for (int i = 0; i < map.length; i++) {
-                        for (int j = 0; j < map[i].length; j++) {
-                            if ( map[i][j] == textures.length-1 ) {
-                                map[i][j] = 0;
-                            } else {
-                                map[i][j]++;
+                        for (int i = 0; i < map.length; i++) {
+                            for (int j = 0; j < map[i].length; j++) {
+                                if ( map[i][j] == textures.length-1 ) {
+                                    map[i][j] = 0;
+                                } else {
+                                    map[i][j]++;
+                                }
                             }
                         }
                     }
-                    updates = 0;
-                } else {
-                    updates++;
+                    if (isKeyPressed(GLFW_KEY_S)) {
+                        for (int i = 0; i < map.length; i++) {
+                            for (int j = 0; j < map[i].length; j++) {
+                                if ( map[i][j] == textures.length-1 ) {
+                                    map[i][j] = 0;
+                                } else {
+                                    map[i][j]+=1;
+                                }
+                            }
+                        }
+                    }
+                    if (isKeyPressed(GLFW_KEY_A)) {
+                        for (int i = 0; i < map.length; i++) {
+                            for (int j = 0; j < map[i].length; j++) {
+                                if ( map[i][j] == textures.length-1 ) {
+                                    map[i][j] = 0;
+                                } else {
+                                    map[i][j]++;
+                                }
+                            }
+                        }
+                    }
+                    if (isKeyPressed(GLFW_KEY_D)) {
+                        for (int i = 0; i < map.length; i++) {
+                            for (int j = 0; j < map[i].length; j++) {
+                                if ( map[i][j] == textures.length-1 ) {
+                                    map[i][j] = 0;
+                                } else {
+                                    map[i][j]++;
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
