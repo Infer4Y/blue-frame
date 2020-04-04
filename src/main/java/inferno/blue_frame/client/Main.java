@@ -3,11 +3,14 @@ package inferno.blue_frame.client;
 import inferno.blue_frame.client.assets.ResourceLocation;
 import inferno.blue_frame.client.assets.Shader;
 import inferno.blue_frame.client.assets.Texture;
+import inferno.blue_frame.client.assets.Textures;
 import inferno.blue_frame.client.audio.AudioMaster;
 import inferno.blue_frame.client.audio.Source;
+import inferno.blue_frame.client.rendering.Renderer;
 import inferno.blue_frame.client.rendering.TileModel;
 import inferno.blue_frame.client.utils.WindowReference;
 import inferno.blue_frame.client.window.ClientWindow;
+import inferno.blue_frame.common.Game;
 import inferno.blue_frame.common.utils.Matrix4f;
 import inferno.blue_frame.common.world.chunks.Chunk;
 import org.lwjgl.glfw.GLFWKeyCallback;
@@ -19,20 +22,21 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class Main {
     private static ClientWindow windowClient;
-    private static Random random = new Random();
-    public static Chunk chunk = new Chunk();
+    private static Renderer renderer;
+
 
     public static void main(String[] args){
+        Game.init();
 
         windowClient = new ClientWindow("LWJGL Test 1.5", WindowReference.width, WindowReference.height){
-            Texture[] textures;
-            TileModel tileRenderer;
             Source source;
-            int updates = 0;
-            boolean render;
 
             @Override
             public void initTwo(){
+                Game.init();
+
+                Textures.init();
+
                 AudioMaster.init();
                 AudioMaster.setListenerData();
                 source  = new Source();
@@ -42,40 +46,8 @@ public class Main {
                 Shader.TILE.setUniformMat4f("pr_matrix", pr_matrix);
                 Shader.TILE.setUniform1i("tex", 1);
 
-                textures = new Texture[]{
-                        new Texture(new ResourceLocation("textures/tiles/brick.png")),
-                        new Texture(new ResourceLocation("textures/tiles/diag_brick.png")),
-                        new Texture(new ResourceLocation("textures/tiles/tile.png")),
-                        new Texture(new ResourceLocation("textures/tiles/black_tile.png")),
-                        new Texture(new ResourceLocation("textures/tiles/aluminum.png")),
-                        new Texture(new ResourceLocation("textures/tiles/brass.png")),
-                        new Texture(new ResourceLocation("textures/tiles/carbon.png")),
-                        new Texture(new ResourceLocation("textures/tiles/cobalt.png")),
-                        new Texture(new ResourceLocation("textures/tiles/coal.png")),
-                        new Texture(new ResourceLocation("textures/tiles/copper.png")),
-                        new Texture(new ResourceLocation("textures/tiles/gold.png")),
-                        new Texture(new ResourceLocation("textures/tiles/iron.png")),
-                        new Texture(new ResourceLocation("textures/tiles/blue_glass.png")),
-                        new Texture(new ResourceLocation("textures/tiles/magenta_glass.png")),
-                        new Texture(new ResourceLocation("textures/tiles/purple_glass.png")),
-                        new Texture(new ResourceLocation("textures/tiles/red_glass.png")),
-                        new Texture(new ResourceLocation("textures/tiles/orange_glass.png")),
-                        new Texture(new ResourceLocation("textures/tiles/yellow_glass.png")),
-                        new Texture(new ResourceLocation("textures/tiles/green_glass.png")),
-                        new Texture(new ResourceLocation("textures/tiles/grey_glass.png")),
-                        new Texture(new ResourceLocation("textures/tiles/dark_grey_glass.png")),
-                        new Texture(new ResourceLocation("textures/tiles/white_glass.png")),
-                        new Texture(new ResourceLocation("textures/tiles/stone.png")),
-                        new Texture(new ResourceLocation("textures/tiles/placeholder.png"))
-                };
 
-                for (int i = 0; i < 16; i++) {
-                    for (int j = 0; j < 16; j++) {
-
-                    }
-                }
-
-                tileRenderer = new TileModel(textures[0]);
+                renderer = new Renderer();
             }
 
             public boolean isKeyPressed(int keyCode) {
@@ -85,16 +57,20 @@ public class Main {
             @Override
             public void update() {
                 super.update();
-                tileRenderer.update();
+                Game.update();
 
                 {
                     if (isKeyPressed(GLFW_KEY_W)) {
+                        renderer.camera.update(0, 0.1f);
                     }
                     if (isKeyPressed(GLFW_KEY_S)) {
+                        renderer.camera.update(0, -0.1f);
                     }
                     if (isKeyPressed(GLFW_KEY_A)) {
+                        renderer.camera.update(-0.1f, 0);
                     }
                     if (isKeyPressed(GLFW_KEY_D)) {
+                        renderer.camera.update(0.1f, 0);
                     }
                 }
             }
@@ -102,13 +78,7 @@ public class Main {
             @Override
             public void render() {
                 super.render();
-
-                GL11.glColor3f(.5f, 1f,0f);
-                //        tileRenderer.setPos((i * 2) - 9, (j * 2) - 9, -1f);
-
-                 //       tileRenderer.setTexture(textures[0]);
-
-                  //      tileRenderer.render();
+                renderer.render(Game.world);
             }
 
             @Override

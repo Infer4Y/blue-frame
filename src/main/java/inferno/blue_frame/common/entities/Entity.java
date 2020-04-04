@@ -1,19 +1,22 @@
-package inferno.blue_frame.common.items;
+package inferno.blue_frame.common.entities;
 
-public class Item {
+public class Entity {
     private String
             name,
             registryName;
 
-    public Item() { }
+    public Entity(){}
+
+    public void randomTick(){}
+
+    public void update(){}
 
     public String getRegistryName() {
         return registryName;
     }
 
-    public Item setRegistryName(String registryName) {
+    public Entity setRegistryName(String registryName) {
         this.registryName = registryName;
-
         return this;
     }
 
@@ -21,9 +24,8 @@ public class Item {
         return name;
     }
 
-    public Item setName(String name) {
+    public Entity setName(String name) {
         this.name = name;
-
         return this;
     }
 }

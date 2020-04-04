@@ -6,7 +6,8 @@ public class ItemTile extends Item {
     private Tile reference;
 
     public ItemTile(Tile tile) {
-        super(tile.getName());
+        this.setName(tile.getName());
+        this.setRegistryName(tile.getRegistryName());
         this.reference = tile;
     }
 

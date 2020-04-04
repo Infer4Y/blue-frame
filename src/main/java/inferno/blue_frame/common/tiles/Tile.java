@@ -11,7 +11,9 @@ public class Tile {
 
     public Tile() {}
 
-    public void tick(){}
+    public void randomTick(){}
+
+    public void update(){}
 
     public String getName() {
         return name;

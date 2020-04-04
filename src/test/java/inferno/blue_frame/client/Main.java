@@ -3,33 +3,16 @@ package inferno.blue_frame.client;
 import inferno.blue_frame.client.assets.ResourceLocation;
 import inferno.blue_frame.client.assets.Shader;
 import inferno.blue_frame.client.assets.Texture;
-import inferno.blue_frame.client.rendering.TileModel;
 import inferno.blue_frame.client.utils.WindowReference;
 import inferno.blue_frame.client.window.ClientWindow;
 import inferno.blue_frame.common.utils.Matrix4f;
-import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL11;
-
-import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Main {
     private static ClientWindow windowClient;
-    private static Random random = new Random();
-    public static int[][] map = new int[][]{
-            { 0, 0, 1, 2, 3, 3, 2, 1, 0, 0},//1
-            { 0, 1, 2, 3, 4, 4, 3, 2, 1, 0},//2
-            { 1, 2, 3, 4, 3, 3, 4, 3, 2, 1},//3
-            { 2, 3, 4, 3, 2, 2, 3, 4, 3, 2},//4
-            { 3, 4, 3, 2, 1, 1, 2, 3, 4, 3},//5
-            { 3, 4, 3, 2, 1, 1, 2, 3, 4, 3},//6
-            { 2, 3, 4, 3, 2, 2, 3, 4, 3, 2},//7
-            { 1, 2, 3, 4, 3, 3, 4, 3, 2, 1},//8
-            { 0, 1, 2, 3, 4, 4, 3, 2, 1, 0},//9
-            { 0, 0, 1, 2, 3, 3, 2, 1, 0, 0} //10
-    };
 
     public static void main(String[] args){
 
